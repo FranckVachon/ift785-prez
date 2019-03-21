@@ -1,8 +1,4 @@
 import inspect
-import multiple_inheritance
-
-
-
 
 """ Intro à Python: tout un est un objet. Mais qu'est-ce qu'un objet?
 - Il peut avoir des attributs (optionel)
@@ -56,7 +52,50 @@ print("\nMais méthod class != méthod instance!")
 CLS = MyClass.my_func
 OBJ = o.my_func
 print("cls.metho == obj.metho? " + str(MyClass.my_func is o.my_func))
+print()
 
+# Timing a method - of course we could do
+a = 42
+b = 42
+def time_me(a,b):
+    time.sleep(1)
+    return a+b
+
+print("Timing a function - a not great way to do it:")
+import time
+start = time.time()
+ans = time_me(42,42)
+end = time.time()
+print("It took: " + str(end - start))
+
+# Ou on pourrait intégrer le time dans time_me - mais ça rest qu'on doit changer
+# le code source simplement pour timer. Une meilleure solution: utiliser le fait
+# qu'une méthode soit un objet et la passer en argument à un méthode qui se
+# spécialise dans le calcul du temps....
+
+def time_it(func, a, b):
+    # is a method, which is really just an object.
+    start = time.time()
+    ans = func(a,b)
+    end = time.time()
+    print("It took: " + str(end - start))
+    return ans
+
+print("A decent way to do it:")
+ans = time_it(time_me, a, b)
+print("... and the answer is: " + str(ans))
+
+# Encore un peu mieux - on peut généraliser notre timer
+
+def better_time_it(func, *args, **kwargs):
+    start = time.time()
+    ans = func(*args, **kwargs)
+    end = time.time()
+    print("It took: " + str(end - start))
+
+print("A now pretty decent way to do it:")
+better_time_it(time_me, a, b)
+better_time_it(o.my_func)
 
 # Récupérons les constituants de la classe "object" par instrospection
 o_attributes = sorted([att for att in dir(object) if not callable(getattr(object, att))])

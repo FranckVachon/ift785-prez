@@ -131,3 +131,4 @@ WEAKNESSES:
 - Should you NEED to type check? Are there better architectures that would require less type check?
 - A register() is a promise. It is not enforced, nor is it enforceable.
 """
+
